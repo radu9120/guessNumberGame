@@ -11,47 +11,43 @@ let secretNumber = Math.trunc(Math.random() * 20) + 1;
 let score = 20;
 let highScore = 0;
 
+const displayMessage = function (message) {
+  document.querySelector('.message').textContent = message;
+};
+
 document.querySelector('.check').addEventListener('click', function () {
   const guess = Number(document.querySelector('.guess').value);
   console.log(guess);
 
   // no input
   if (!guess) {
-    document.querySelector('.message').textContent = 'No number 🥲';
-
-    //When a player wins
+    displayMessage('No number 🥲');
+    //my ideaa. Can't insert more than max allowed 20.
   } else if (guess > 20) {
-    document.querySelector('.message').textContent = 'Not allowed number🥲';
+    displayMessage('Not allowed number🥲');
+
+    //When a player wins!!
   } else if (guess === secretNumber) {
-    document.querySelector('.message').textContent = ' 🎉Correct Number!';
+    displayMessage(' 🎉Correct Number!');
     document.querySelector('.number').textContent = secretNumber;
     document.querySelector('body').style.backgroundColor = '#60b347';
     document.querySelector('.number').style.width = '30rem';
 
     if (score > highScore) {
       highScore = score;
-      textContent = highScore;
+      document.querySelector('.highscore').textContent = highScore;
     }
 
-    //Guess above secret number with loss implementation!
-  } else if (guess > secretNumber) {
+    //When a player guess Wrong!!
+  } else if (guess !== secretNumber) {
     if (score > 1) {
-      document.querySelector('.message').textContent = ' Number to High';
+      displayMessage(
+        guess > secretNumber ? ' Number to High' : 'Number to low'
+      );
       score--;
       document.querySelector('.score').textContent = score;
     } else {
-      document.querySelector('.message').textContent = 'You lost the game 🥶';
-      document.querySelector('.score').textContent = 0;
-    }
-    //Guess is lower than secret number.
-  } else if (guess < secretNumber) {
-    //Guess lower than secret number with loss implmentation!
-    if (score > 1) {
-      document.querySelector('.message').textContent = 'Number to Low';
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'You lost the game 🥶';
+      displayMessage('You lost the game 🥶');
       document.querySelector('.score').textContent = 0;
     }
   }
@@ -61,7 +57,7 @@ document.querySelector('.again').addEventListener('click', function () {
   document.querySelector('.score').textContent = 20;
   secretNumber = Math.trunc(Math.random() * 20) + 1;
   document.querySelector('.number').textContent = '?';
-  document.querySelector('.message').textContent = 'Start guessing...';
+  displayMessage('Start guessing...');
   document.querySelector('body').style.backgroundColor = '#222';
   document.querySelector('.number').style.width = '15rem';
   document.querySelector('.guess').value = '';
